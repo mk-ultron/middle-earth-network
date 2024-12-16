@@ -3,6 +3,8 @@
 ## Overview
 This project implements a network analysis of Middle Earth's transportation system using Python's NetworkX library. The graph represents key locations from Tolkien's world as nodes and the paths between them as edges, with weights representing the difficulty/danger of travel.
 
+![image](https://github.com/user-attachments/assets/406da42f-1415-40b0-8d47-d2e351029e6b)
+
 ## Features
 - Interactive visualization of Middle Earth's transportation network
 - 20 key locations (nodes) including cities, fortresses, forests, and landmarks
