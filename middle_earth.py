@@ -3,40 +3,42 @@ import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 import matplotlib.image as mpimg
 from adjustText import adjust_text
+import matplotlib.patches as mpatches
 
 # Create a new directed graph
 G = nx.DiGraph()
 
-# Define locations with updated coordinates
+# Define locations with coordinates representing positions on the map
+# Format: 'Location': {'pos': (x, y), 'type': 'location_type'}
 locations = {
-    'Erebor': {'pos': (88, 58), 'type': 'mountain'},
-    'Dale': {'pos': (87, 57), 'type': 'city'},
+    'Erebor': {'pos': (65, 62), 'type': 'mountain'},
+    'Dale': {'pos': (65,57), 'type': 'city'},
     'Rivendell': {'pos': (47, 52), 'type': 'haven'},
-    'Mirkwood': {'pos': (70, 53), 'type': 'forest'},
+    'Mirkwood': {'pos': (60, 55), 'type': 'forest'},
     'Weathertop': {'pos': (32, 52), 'type': 'ruin'},
     'Bree': {'pos': (28, 52), 'type': 'town'},
     'Moria': {'pos': (47, 43), 'type': 'ruin'},
     'Lorien': {'pos': (52, 42), 'type': 'haven'},
     'Fangorn': {'pos': (48, 38), 'type': 'forest'},
     'Isengard': {'pos': (45, 35), 'type': 'fortress'}, 
-    'Helms_Deep': {'pos': (48, 33), 'type': 'fortress'},
-    'Gap_of_Rohan': {'pos': (35, 32), 'type': 'pass'},
-    'Edoras': {'pos': (52, 30), 'type': 'city'},
+    'Helms_Deep': {'pos': (46, 31), 'type': 'fortress'},
+    'Gap_of_Rohan': {'pos': (45, 32), 'type': 'pass'},
+    'Edoras': {'pos': (48, 28), 'type': 'city'},
     'Minas_Tirith': {'pos': (62, 23), 'type': 'city'},
     'Osgiliath': {'pos': (64, 23), 'type': 'ruin'},
-    'Dead_Marshes': {'pos': (68, 28), 'type': 'hazard'},
-    'Black_Gate': {'pos': (72, 23), 'type': 'gate'},
-    'Mount_Doom': {'pos': (78, 18), 'type': 'mountain'},
-    'Barad_dur': {'pos': (75, 20), 'type': 'fortress'},
-    'Paths_of_Dead': {'pos': (38, 25), 'type': 'pass'}
+    'Dead_Marshes': {'pos': (62, 28), 'type': 'hazard'},
+    'Black_Gate': {'pos': (66, 29), 'type': 'gate'},
+    'Mount_Doom': {'pos': (69, 25), 'type': 'mountain'},
+    'Barad_dur': {'pos': (72, 26), 'type': 'fortress'},
+    'Paths_of_Dead': {'pos': (51, 24), 'type': 'pass'}
 }
-
 
 # Add nodes to the graph
 for loc, data in locations.items():
     G.add_node(loc, pos=data['pos'], type=data['type'])
 
-# Define routes with weights (1-10 scale for difficulty/danger)
+# Define routes with weights representing difficulty/danger (1-10 scale)
+# Format: (source, destination, {'weight': difficulty, 'type': 'route_type'})
 routes = [
     ('Bree', 'Weathertop', {'weight': 3, 'type': 'road'}),
     ('Weathertop', 'Rivendell', {'weight': 4, 'type': 'road'}),
@@ -59,12 +61,12 @@ routes = [
     ('Edoras', 'Paths_of_Dead', {'weight': 6, 'type': 'mountain_pass'})
 ]
 
-# Add edges to the graph
+# Add bidirectional edges to the graph (routes can be traveled both ways)
 for (src, dst, data) in routes:
     G.add_edge(src, dst, **data)
-    G.add_edge(dst, src, **data)  # Add reverse route
+    G.add_edge(dst, src, **data)
 
-# Load the custom font
+# Load the custom Middle Earth font, fallback to serif if unavailable
 try:
     font_path = 'middle_earth_font.ttf'
     fm.fontManager.addfont(font_path)
@@ -75,15 +77,17 @@ except:
     font_family = 'serif'
 
 def visualize_middle_earth():
+    # Create a new figure with specified size
     plt.figure(figsize=(20, 15))
     
     # Load and display the background map
     map_img = mpimg.imread('middle_earth_map.png')
     plt.imshow(map_img, extent=[0, 100, 0, 75], aspect='auto', alpha=0.8)
     
+    # Get node positions
     pos = nx.get_node_attributes(G, 'pos')
     
-    # Define node colors
+    # Define color scheme for different location types
     node_colors = {
         'city': '#ffd700',      # Gold
         'haven': '#90EE90',     # Light green
@@ -97,7 +101,7 @@ def visualize_middle_earth():
         'pass': '#A9A9A9'       # Gray
     }
     
-    # Draw edges with style based on type
+    # Draw edges with different styles based on path type
     edge_colors = []
     edge_styles = []
     for (u, v) in G.edges():
@@ -115,7 +119,7 @@ def visualize_middle_earth():
                           width=1.5,
                           alpha=0.7)
     
-    # Draw nodes
+    # Draw nodes for each location type
     for node_type in set(nx.get_node_attributes(G, 'type').values()):
         node_list = [node for node in G.nodes() if G.nodes[node]['type'] == node_type]
         nx.draw_networkx_nodes(G, pos,
@@ -126,7 +130,7 @@ def visualize_middle_earth():
                              linewidths=2,
                              alpha=0.8)
     
-    # Create text objects for all labels
+    # Create and position node labels
     texts = []
     for node, (x, y) in pos.items():
         texts.append(plt.text(x, y, node.replace('_', ' '),
@@ -135,11 +139,43 @@ def visualize_middle_earth():
                             horizontalalignment='center',
                             verticalalignment='center'))
     
-    # Adjust label positions to avoid overlap
+    # Modified text adjustment parameters to prevent arrow issues
     adjust_text(texts,
-               arrowprops=dict(arrowstyle='-', color='gray', alpha=0.5, lw=0.5),
+               arrowprops=dict(arrowstyle='-',
+                              color='gray',
+                              alpha=0.5,
+                              lw=0.5,
+                              shrinkA=7,  # Added shrinkA parameter
+                              shrinkB=5), # Added shrinkB parameter
                expand_points=(1.2, 1.2),
-               force_points=(0.5, 0.5))
+               force_points=(0.5, 0.5),
+               force_text=(0.5, 0.5),    # Added force_text parameter
+               min_arrow_dist=5.0)       # Added minimum arrow distance
+
+    
+    # Create legend for location types
+    legend_elements = []
+    for loc_type, color in node_colors.items():
+        legend_elements.append(
+            mpatches.Patch(facecolor=color, edgecolor='black',
+                          label=loc_type.replace('_', ' ').title())
+        )
+    
+    # Add path types to legend
+    legend_elements.extend([
+        plt.Line2D([0], [0], color='#463E3F', linestyle='-',
+                  label='Safe Path'),
+        plt.Line2D([0], [0], color='#FF0000', linestyle=':',
+                  label='Dangerous Path')
+    ])
+    
+    # Add legend to plot
+    plt.legend(handles=legend_elements,
+              loc='center left',
+              bbox_to_anchor=(1, 0.5),
+              title='Map Legend',
+              title_fontsize=14,
+              fontsize=12)
     
     # Add title
     plt.title("Realms of Middle Earth - Network Analysis",
@@ -151,19 +187,17 @@ def visualize_middle_earth():
     plt.tight_layout()
     plt.show()
 
-
-# Add analysis function
 def analyze_network():
     print("\nNetwork Analysis Results:")
     
-    # Shortest Path Analysis
+    # Calculate and display shortest (safest) path from Bree to Mount Doom
     print("\n1. Shortest (Safest) Path Analysis (Bree to Mount Doom):")
     path = nx.shortest_path(G, 'Bree', 'Mount_Doom', weight='weight')
     distance = nx.shortest_path_length(G, 'Bree', 'Mount_Doom', weight='weight')
     print(f"Safest route: {' -> '.join(path)}")
     print(f"Total danger score: {distance}")
     
-    # Strategic Locations Analysis
+    # Analyze strategic importance of locations using betweenness centrality
     print("\n2. Strategic Locations (Betweenness Centrality):")
     centrality = nx.betweenness_centrality(G)
     sorted_locations = sorted(centrality.items(), key=lambda x: x[1], reverse=True)
@@ -171,7 +205,7 @@ def analyze_network():
     for loc, score in sorted_locations[:5]:
         print(f"{loc}: {score:.3f}")
     
-    # Regional Analysis
+    # Identify natural groupings of locations
     print("\n3. Regional Groupings:")
     communities = list(nx.community.greedy_modularity_communities(G))
     print(f"Number of distinct regions: {len(communities)}")
