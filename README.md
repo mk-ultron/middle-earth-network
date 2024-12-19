@@ -1,7 +1,7 @@
 # Middle Earth Network Analysis
 
 ## Overview
-This Streamlit application analyzes the transportation network of Middle Earth using NetworkX. It's like Google Maps for fantasy, helping you find the safest paths between locations while avoiding those pesky Nazgûl!
+This project implements a network analysis of Middle Earth's transportation system using Python's NetworkX library. The graph represents key locations from Tolkien's world as nodes and the paths between them as edges, with weights representing the difficulty/danger of travel.
 
 ## Key Features
 - Interactive map visualization with 32 key locations
