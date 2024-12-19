@@ -15,7 +15,7 @@ This project implements a network analysis of Middle Earth's transportation syst
 ## Prerequisites
 ```bash
 # Core requirements
-streamlit       # For our web interface
+streamlit       # For the web interface
 networkx        # The brain behind our network analysis
 matplotlib      # Makes everything look pretty
 adjustText      # Keeps our labels from overlapping
