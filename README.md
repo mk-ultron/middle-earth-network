@@ -12,6 +12,8 @@ This project implements a network analysis of Middle Earth's transportation syst
 - Color-coded locations and paths showing different types and danger levels
 - Detailed journey breakdowns with danger scores and path types
 
+![image](https://github.com/user-attachments/assets/a56dc8b3-9ce2-469a-a3c2-5daa8d2b06ce)
+
 ## Prerequisites
 ```bash
 # Core requirements
