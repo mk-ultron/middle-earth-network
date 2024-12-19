@@ -1,102 +1,155 @@
 # Middle Earth Network Analysis
 
 ## Overview
-This project implements a network analysis of Middle Earth's transportation system using Python's NetworkX library. The graph represents key locations from Tolkien's world as nodes and the paths between them as edges, with weights representing the difficulty/danger of travel.
+This Streamlit application analyzes the transportation network of Middle Earth using NetworkX. It's like Google Maps for fantasy, helping you find the safest paths between locations while avoiding those pesky Nazgûl!
 
-## Features
-- Interactive visualization of Middle Earth's transportation network
-- 20 key locations (nodes) including cities, fortresses, forests, and landmarks
-- 38 bidirectional paths (edges) with weighted difficulty levels
-- Color-coded location types and path safety indicators
-- Three network analysis algorithms:
-  1. Shortest (safest) path finding
-  2. Strategic location analysis using betweenness centrality
-  3. Regional grouping detection using community detection
+## Key Features
+- Interactive map visualization with 32 key locations
+- Three powerful analysis tools:
+  - Path Finder: Find the safest route between any two locations
+  - Strategic Points Analyzer: Identify key control points in Middle Earth
+  - Regional Groups Detective: Discover natural geographic communities
+- Color-coded locations and paths showing different types and danger levels
+- Detailed journey breakdowns with danger scores and path types
 
 ## Prerequisites
-- Python 3.7+
-- NetworkX
-- Matplotlib
-- Adjustext
-
-## Installation
-1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/middle-earth-network.git
+# Core requirements
+streamlit       # For our web interface
+networkx        # The brain behind our network analysis
+matplotlib      # Makes everything look pretty
+adjustText      # Keeps our labels from overlapping
+```
+
+## Quick Start
+1. Clone the repo and install dependencies:
+```bash
+git clone https://github.com/mk-ultron/middle-earth-network.git
 cd middle-earth-network
+pip install -r requirements.txt
 ```
 
-2. Install required packages:
+2. Add your map image:
+- Place 'middle_earth_map_optimized.png' in the project directory
+- Don't worry, the app works without it too!
+
+3. Fire it up:
 ```bash
-pip install networkx matplotlib adjustText
+streamlit run app.py
 ```
-
-3. (Optional) Install the Middle Earth font for authentic styling:
-   - Place `middle_earth_font.ttf` in the project directory
-   - The program will fallback to serif font if not available
-
-## Usage
-Run the main program:
-```bash
-python middle_earth_network.py
-```
-
-The program will:
-1. Display an interactive map visualization
-2. Print network analysis results to the console
-3. Show the safest path from Bree to Mount Doom
-4. Identify strategic locations
-5. Display regional groupings
 
 ## Network Structure
 
 ### Location Types
-- Cities (Gold): Major population centers
-- Havens (Light Green): Elven refuges
-- Fortresses (Dark Red): Military strongholds
-- Mountains (Dark Gray): Major peaks
-- Forests (Forest Green): Wooded regions
-- Ruins (Saddle Brown): Ancient remnants
-- Towns (Orange): Smaller settlements
-- Gates (Black): Strategic passageways
-- Hazards (Purple): Dangerous areas
-- Passes (Gray): Mountain passages
+Each location in Middle Earth is categorized:
+- 🏰 Cities (Gold): Major population centers like Minas Tirith
+- 🌳 Havens (Light Green): Safe spots like Rivendell
+- 🗼 Fortresses (Dark Red): The scary places like Barad-dûr
+- ⛰️ Mountains (Dark Gray): Where dragons sleep
+- 🌲 Forests (Forest Green): Watch out for spiders!
+- 🏛️ Ruins (Brown): Abandoned but important
+- 🏘️ Towns (Orange): Cozy places like Bree
+- 🚪 Gates (Black): Important entrances
+- ⚠️ Hazards (Purple): The Dead Marshes and such
+- 🏔️ Passes (Gray): Mountain crossings
 
-### Path Types
-- Safe Paths (Solid Gray): Normal travel routes
-- Dangerous Paths (Dotted Red): High-risk routes
-
-### Edge Weights
-Paths are weighted on a scale of 1-10 based on difficulty/danger:
-- 1-3: Safe, well-traveled routes
-- 4-6: Moderate difficulty
-- 7-8: Dangerous passages
-- 9-10: Extremely perilous routes
+### Path Types and Danger Levels
+- Safe Roads (1-3): Well-traveled paths, like Shire to Bree
+- Standard Routes (4-5): Regular roads with some risk
+- Tricky Paths (6-7): Forest paths and mountain passes
+- Dangerous Routes (8-10): The "don't go alone" paths
 
 ## Analysis Features
 
-### 1. Shortest Path Analysis
-Identifies the safest route between locations using Dijkstra's algorithm, taking into account path difficulty weights.
+### 1. Path Finder
+```python
+def shortest_path_analysis(G, start='Bree', end='Mount_Doom'):
+    # Finds the safest path between locations
+    # Returns: Complete route, danger scores, and path details
+```
+- Uses Dijkstra's algorithm (fancy path-finding math)
+- Considers both distance and danger
+- Provides step-by-step journey breakdown
+- Calculates total danger score
 
-### 2. Strategic Locations
-Uses betweenness centrality to identify key strategic positions in the network, highlighting locations that are important for controlling movement through Middle Earth.
+### 2. Strategic Locations Analyzer
+```python
+def strategic_locations_analysis(G, top_n=5):
+    # Identifies key control points in Middle Earth
+    # Returns: Important locations and their strategic values
+```
+- Uses betweenness centrality (finds important crossroads)
+- Ranks locations by strategic importance
+- Analyzes connection patterns
+- Calculates regional influence
 
-### 3. Regional Groupings
-Employs community detection to identify natural groupings of locations, revealing the underlying regional structure of Middle Earth.
+### 3. Regional Groups Detective
+```python
+def regional_groups_analysis(G):
+    # Finds natural geographic communities
+    # Returns: Region details with capitals and characteristics
+```
+- Implements Louvain community detection
+- Identifies natural borders and regions
+- Calculates regional characteristics:
+  - Internal connectivity
+  - Average danger levels
+  - Regional capitals
 
-## Visualization
-The visualization includes:
-- Interactive map with background image
-- Color-coded locations by type
-- Path representations showing safety levels
-- Comprehensive legend
-- Non-overlapping location labels
+## Usage Examples
+
+### Finding a Safe Path
+```python
+# Through the web interface:
+1. Select "Path Finder"
+2. Choose start and end points
+3. Click "Find Path"
+4. Get detailed journey breakdown
+```
+
+### Analyzing Strategic Points
+```python
+# Through the web interface:
+1. Select "Strategic Locations"
+2. Choose number of locations to analyze
+3. Get ranked list of key positions
+```
+
+### Discovering Regions
+```python
+# Through the web interface:
+1. Select "Regional Groups"
+2. Click "Analyze Regions"
+3. Explore natural territory divisions
+```
+
+## Visualization Features
+- Interactive Streamlit interface
+- Color-coded map with location markers
+- Path highlighting
+- Danger level indicators
+- Region grouping visualization
+- Expandable details for each analysis
+
+## Implementation Notes
+- Built with Streamlit for easy web interaction
+- NetworkX handles the heavy lifting of graph analysis
+- Matplotlib creates the beautiful visualizations
+- Modular design for easy feature additions
+
+## Contributing
+Feel free to contribute! Some ideas:
+- Add more locations and paths
+- Implement different analysis methods
+- Improve the visualization
+- Add historical events and their effects on paths
 
 ## Acknowledgments
-- J.R.R. Tolkien for creating the rich world of Middle Earth
-- NetworkX team for the excellent graph analysis library
-- Middle Earth maps used for reference ([this reddit post/user](https://www.reddit.com/r/lotr/comments/bcvzaz/map_of_middle_earth_without_labels_enjoy/))
+- J.R.R. Tolkien for creating Middle Earth
+- NetworkX team for the graph tools
+- Streamlit team for making web apps easy
+- The community for map resources
 
 ## Contact
-Your Name - [@yourusername](https://github.com/mk-ultron)
+Your Name - [@mk-ultron](https://github.com/mk-ultron)
 Project Link: [https://github.com/mk-ultron/middle-earth-network](https://github.com/mk-ultron/middle-earth-network)

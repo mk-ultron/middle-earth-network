@@ -7,7 +7,7 @@ def show_coordinate_grid():
     plt.figure(figsize=(20, 15))
     
     # Load and display the map
-    map_img = mpimg.imread('middle_earth_map.png')
+    map_img = mpimg.imread('middle_earth_map_optimized.png')
     plt.imshow(map_img, extent=[0, 100, 0, 75], aspect='auto', alpha=0.7)
     
     # Add grid
