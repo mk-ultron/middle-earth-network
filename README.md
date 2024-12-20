@@ -136,15 +136,7 @@ def regional_groups_analysis(G):
 ## Implementation Notes
 - Built with Streamlit for easy web interaction
 - NetworkX handles the heavy lifting of graph analysis
-- Matplotlib creates the beautiful visualizations
-- Modular design for easy feature additions
-
-## Contributing
-Feel free to contribute! Some ideas:
-- Add more locations and paths
-- Implement different analysis methods
-- Improve the visualization
-- Add historical events and their effects on paths
+- Matplotlib creates the visualizations
 
 ## Acknowledgments
 - J.R.R. Tolkien for creating Middle Earth
