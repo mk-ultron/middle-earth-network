@@ -153,5 +153,5 @@ Feel free to contribute! Some ideas:
 - The community for map resources
 
 ## Contact
-Your Name - [@mk-ultron](https://github.com/mk-ultron)
+[@mk-ultron](https://github.com/mk-ultron)
 Project Link: [https://github.com/mk-ultron/middle-earth-network](https://github.com/mk-ultron/middle-earth-network)
